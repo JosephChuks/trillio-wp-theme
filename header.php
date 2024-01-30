@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php wp_title(); ?></title>
-    <script type="text/javascript"
-        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
     <?php wp_head(); ?>
 </head>
 
@@ -34,25 +32,8 @@
                         </svg>
                     </button>
                 </form>
-
                 <nav class="user-nav">
-                    <div id="google_translate_element2"></div>
-                    <select onchange="doGTranslate(this);" class="user-nav__language">
-                        <option value="">Language</option>
-                        <option value="en|af">Afrikaans</option>
-                        <option value="en|ar">Arabic</option>
-                        <option value="en|nl">Dutch</option>
-                        <option value="en|en">English</option>
-                        <option value="en|fr">French</option>
-                        <option value="en|hi">Hindi</option>
-                        <option value="en|id">Indonesian</option>
-                        <option value="en|fa">Persian</option>
-                        <option value="en|pt">Portuguese</option>
-                        <option value="en|es">Spanish</option>
-                        <option value="en|sw">Swahili</option>
-                        <option value="en|ur">Urdu</option>
-                        <option value="en|vi">Vietnamese</option>
-                    </select>
+                <?php dynamic_sidebar('header_widget'); ?>
                 </nav>
             </div>
             <?php

@@ -1,5 +1,11 @@
 <?php
+add_theme_support('menus');
 
+function custom_theme_customize_js()
+    {
+    wp_enqueue_script('theme-customizer', get_template_directory_uri() . '/assets/js/theme-customizer.js', array('customize-preview'), '', true);
+    }
+add_action('customize_preview_init', 'custom_theme_customize_js');
 
 function enqueue_assets()
     {
@@ -9,7 +15,6 @@ function enqueue_assets()
     wp_enqueue_style('main-stylesheet', get_stylesheet_directory_uri() . '/assets/css/style.css', array(), '1.0', 'all');
 
     // Enqueue Scripts
-    wp_enqueue_script('g-translate', get_template_directory_uri() . '/assets/js/g-translate.js', array('jquery'), '1.0', true);
     wp_enqueue_script('main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0', true);
     }
 
@@ -134,6 +139,19 @@ function banner_two()
     ));
     }
 add_action('widgets_init', 'banner_two');
+function header_widget()
+    {
+    register_sidebar(array(
+        'name' => esc_html__('Header widget', 'trillio'),
+        'id' => 'header_widget',
+        'description' => esc_html__('Add Header widget', 'trillio'),
+        'before_widget' => '<div id="%1$s" class="user-nav__menu widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h2 class="widget-title">',
+        'after_title' => '</h2>',
+    ));
+    }
+add_action('widgets_init', 'header_widget');
 function adsense_footer()
     {
     register_sidebar(array(
@@ -161,4 +179,171 @@ function get_related_posts()
     );
     $related_posts_query = new WP_Query($related_posts_args);
     return $related_posts_query;
+    }
+
+
+function custom_theme_customize_register($wp_customize)
+    {
+    $wp_customize->add_section('theme_colors', array(
+        'title' => __('Theme Colors', 'trillio'),
+        'priority' => 30,
+    ));
+
+    $wp_customize->add_setting('color_primary', array(
+        'default' => '#35a406',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color_primary', array(
+        'label' => __('Primary Color', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+
+    $wp_customize->add_setting('color_primary_light', array(
+        'default' => '#4ce909',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color_primary_light', array(
+        'label' => __('Primary Color Light', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+    $wp_customize->add_setting('color_secondary', array(
+        'default' => '#f7140d',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color_secondary', array(
+        'label' => __('Secondary Color', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+
+    $wp_customize->add_setting('color-grey-light-1', array(
+        'default' => '#faf9f9',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color-grey-light-1', array(
+        'label' => __('Theme Background Color', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+    $wp_customize->add_setting('color-grey-light-2', array(
+        'default' => '#f4f2f2',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color-grey-light-2', array(
+        'label' => __('Container Background Color', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+    $wp_customize->add_setting('color-grey-light-3', array(
+        'default' => '#f0eeee',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color-grey-light-3', array(
+        'label' => __('Content Background Color', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+
+    $wp_customize->add_setting('color-grey-dark-1', array(
+        'default' => '#333',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color-grey-dark-1', array(
+        'label' => __('Text Color', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+    $wp_customize->add_setting('color-grey-dark-2', array(
+        'default' => '#333',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color-grey-dark-2', array(
+        'label' => __('Primary Menu Background', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+    $wp_customize->add_setting('color-grey-dark-3', array(
+        'default' => '#999',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color-grey-dark-3', array(
+        'label' => __('Placeholder color', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+    $wp_customize->add_setting('color-grey-dark-4', array(
+        'default' => '#333',
+        'transport' => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color-grey-dark-4', array(
+        'label' => __('Footer', 'trillio'),
+        'section' => 'theme_colors',
+    )));
+
+
+
+    // Add section
+    $wp_customize->add_section('featured_image_settings', array(
+        'title' => __('Featured Image', 'trillio-simple-wordpress-theme'),
+        'priority' => 30,
+    ));
+
+    // Add setting
+    $wp_customize->add_setting('enable_featured_image', array(
+        'default' => true,
+        'sanitize_callback' => 'sanitize_checkbox',
+    ));
+
+    // Add control
+    $wp_customize->add_control('enable_featured_image', array(
+        'label' => __('Enable Featured Image', 'trillio-simple-wordpress-theme'),
+        'section' => 'featured_image_settings',
+        'type' => 'checkbox',
+    ));
+
+    }
+add_action('customize_register', 'custom_theme_customize_register');
+
+
+function custom_theme_customizer_styles()
+    {
+    $color_primary = get_theme_mod('color_primary', '#35a406');
+    $color_primary_light = get_theme_mod('color_primary_light', '#4ce909');
+    $color_secondary = get_theme_mod('color_primary_light', '#f7140d');
+    $color_grey_light_1 = get_theme_mod('color-grey-light-1', '#faf9f9');
+    $color_grey_light_2 = get_theme_mod('color-grey-light-2', '#f4f2f2');
+    $color_grey_light_3 = get_theme_mod('color-grey-light-3', '#f0eeee');
+    $color_grey_dark_1 = get_theme_mod('color-grey-dark-1', '#333');
+    $color_grey_dark_2 = get_theme_mod('color-grey-dark-2', '#333');
+    $color_grey_dark_3 = get_theme_mod('color-grey-dark-3', '#999');
+    $color_grey_dark_4 = get_theme_mod('color-grey-dark-4', '#333');
+
+    ?>
+                         <style type="text/css">
+                             :root {
+                                 --color-primary: <?php echo $color_primary; ?>;
+                                 --color-primary-light: <?php echo $color_primary_light; ?>;
+                                  --color-secondary: <?php echo $color_secondary; ?>;
+                                 --color-grey-light-1: <?php echo $color_grey_light_1; ?>;
+                                 --color-grey-light-2: <?php echo $color_grey_light_2; ?>;
+                                 --color-grey-light-3: <?php echo $color_grey_light_3; ?>;
+
+                                 --color-grey-dark-1: <?php echo $color_grey_dark_1; ?>;
+                                 --color-grey-dark-2: <?php echo $color_grey_dark_2; ?>;
+                                     --color-grey-dark-4: <?php echo $color_grey_dark_4; ?>;
+                                 --color-grey-dark-3: <?php echo $color_grey_dark_3; ?>;
+                             }
+                         </style>
+                        <?php
+    }
+add_action('wp_head', 'custom_theme_customizer_styles');
+
+
+add_action('customize_register', 'custom_theme_customize_register');
+
+function sanitize_checkbox($input)
+    {
+    return (isset($input) && true == $input) ? true : false;
     }

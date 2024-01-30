@@ -1,0 +1,7 @@
+=== Version 1.1 ===
+* Date: 2024-01-30
+* Added: Color customization
+* Added: Widget block in the header
+* Added: Show featured image optional
+* Removed: Hardcoded Gtranslate plugin 
+* Updated: Styling for better responsiveness

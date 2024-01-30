@@ -69,12 +69,15 @@
                     </div>
 
                     <article id="post-<?php the_ID(); ?>" class="description__article-body">
+                    <?php if (get_theme_mod('enable_featured_image', true)) : ?>
                         <?php if (has_post_thumbnail()) : ?>
                             <div class="featured-image">
                                 <?php the_post_thumbnail('medium'); ?>
                             </div>
                         <?php endif; ?>
-                        <div class="entry-content">
+                            <?php endif; ?>
+
+                                <div class="entry-content">
                             <?php the_content(); ?>
 
                             <div class="overview__socials mt3">
